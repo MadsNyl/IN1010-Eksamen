@@ -12,6 +12,7 @@ public class TestPrioritetskoe {
         leggTilNode(test4);
         leggTilNode(test3);
         leggTilNode(test1);
+        iterer();
     }
 
     // skriver ut storrelse til koe
@@ -30,5 +31,12 @@ public class TestPrioritetskoe {
 
         // skriver ut storrelse
         System.out.println("\nStorrelse: " + prioritetskoe.storrelse());
+    }
+
+    // tester for each lokke
+    static void iterer() {
+        for (String e : prioritetskoe) {
+            System.out.println(e);
+        }
     }
 }

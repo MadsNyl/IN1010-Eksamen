@@ -1,4 +1,6 @@
-abstract class Lenkeliste<T> {
+import java.util.Iterator;
+
+abstract class Lenkeliste<T> implements Iterable<T> {
 
     // klasse for node. Lenkeliste bestaar av noder
     class Node {
@@ -14,9 +16,30 @@ abstract class Lenkeliste<T> {
         public String toString() { return data.toString(); }
     }
 
+    // klasse for iterator slik at man kan bruke for-each lokke
+    class LenkelisteIterator implements Iterator<T> {
+        private int  pos = 0;
+
+        @Override
+        public T next() {
+            pos++;
+            return hent(pos - 1);
+        }
+
+        @Override
+        public boolean hasNext() { return pos < storrelse(); }
+    }
+
     // setter opp data for lenkeliste
     protected Node start = null;
     protected Node slutt = null;
+
+    // overkjører iterator metode for å returnere et objekt av
+    // LenkelisteIterator
+    @Override
+    public Iterator<T> iterator() {
+        return new LenkelisteIterator();
+    }
 
     // returnerer storrelse
     public int storrelse() {
