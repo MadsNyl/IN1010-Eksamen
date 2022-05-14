@@ -4,7 +4,7 @@ abstract class Lenkeliste<T> {
     class Node {
         public Node forrige = null;
         public Node neste = null;
-        private T data;
+        protected T data;
 
         public Node(T data) {
             this.data = data;
@@ -110,6 +110,44 @@ abstract class Lenkeliste<T> {
             ny.neste = node;
             node = ny;
         }
+    }
+
+    // bytter node i gitt posisjon
+    public void bytt(int pos, T data) {
+        Node node = start;
+        Node ny = new Node(data);
+
+        // hvis listen er tom
+        if (storrelse() == 0) { 
+            leggTil(data);
+            return;
+        }
+
+        // sjekker om indeks er i liste
+        if (pos < 0 || pos > storrelse() - 1) throw new UgyldigListeIndeks(pos);
+
+        // hvis pos er i starten av liste
+        if (pos == 0) {
+            start.neste.forrige = ny;
+            ny.neste = start.neste;
+            start = ny;
+        } 
+        else if (pos == storrelse() - 1) {
+            // hvis pos er i slutten av liste
+            slutt.forrige.neste = ny;
+            ny.forrige = slutt.forrige;
+            slutt = ny;
+        } else {
+            for (int i = 0; i < pos; i++) {
+                node = node.neste;
+            }
+            node.forrige.neste = ny;
+            node.neste.forrige = ny;
+            ny.neste = node.neste;
+            ny.forrige = node.forrige;
+            node = ny;
+        }
+
     }
 
     // legger til node
