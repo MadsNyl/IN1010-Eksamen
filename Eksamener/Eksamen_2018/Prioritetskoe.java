@@ -13,7 +13,7 @@ public class Prioritetskoe<T> {
     private int storrelse = 0;
 
     public void settInn(T inn, int prio) {
-        Node ny = new Node(inn);
+        Node ny = new Node(inn, prio);
 
         if (antall() == 0) {
             start = ny;
@@ -40,10 +40,10 @@ public class Prioritetskoe<T> {
         Node node = start;
         if (antall() == 1) {
             start = null;
-            return start;
+            return start.data;
         }
         start = start.neste;
-        return node;
+        return node.data;
     }
 
     public int antall() {
