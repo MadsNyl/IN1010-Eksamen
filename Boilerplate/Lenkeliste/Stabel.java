@@ -1,6 +1,5 @@
 public class Stabel<T> extends Lenkeliste<T> {
     
-
     // legger til node paa slutten av liste
     @Override
     public void leggTil(T data) {
