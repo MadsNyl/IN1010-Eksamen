@@ -1,3 +1,4 @@
+
 public class TestKoe {
     static Lenkeliste<String> koe = new Koe<>();
     public static void main(String[] args) {
