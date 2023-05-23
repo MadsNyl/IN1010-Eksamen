@@ -1,0 +1,53 @@
+
+class Sortert {
+
+    Node start = null;
+
+    class Node {
+
+	int data;
+	Node next;
+
+	public Node(int data){
+	    this.data = data;
+	}
+    }
+
+    public void add(int data){
+	Node n = new Node(data);
+
+	if (start == null){
+	    start = n;
+	    return;
+	}
+
+	if (data < start.data){
+	    n.next = start;
+	    start = n;
+	    return;
+	}
+	Node tmp = start;
+	while (tmp.next != null){
+	    if (data < tmp.next.data){
+		n.next = tmp.next;
+		tmp.next = n;
+		return;
+	    }
+	    tmp = tmp.next;
+	}
+	tmp.next = n;
+    }
+
+    public void print(){
+	Node tmp = start;
+	while (tmp != null){
+	    System.out.println(tmp.data);
+	    tmp = tmp.next;
+	}
+    }
+}
+
+
+
+
+

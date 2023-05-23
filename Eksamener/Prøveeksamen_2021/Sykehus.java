@@ -14,16 +14,16 @@ public class Sykehus {
         skrivUt(pasient2, sengepost);
 
         // oppgave 5
-        int 
+        
     }
 
     private static void skrivInn(Pasient p, Avdeling avdeling) {
-        avdeling.settInnPasient(p);
+        avdeling.settInn(p);
     }
 
     private static void overfor(Pasient p, Avdeling fra, Avdeling til) {
         Pasient pasient = fra.hentUt(p);
-        if (pasient != null) til.settInnPasient(pasient);
+        if (pasient != null) til.settInn(pasient);
     }
 
     private static void skrivUt(Pasient p, Avdeling avdeling) {

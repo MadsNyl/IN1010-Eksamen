@@ -1,0 +1,8 @@
+
+interface Lenkeliste<T> {
+
+    public void add(T d);
+    public int size();
+}
+
+

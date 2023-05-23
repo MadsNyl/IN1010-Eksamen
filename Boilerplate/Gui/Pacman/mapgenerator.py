@@ -1,20 +1,24 @@
 import random
 import pygame as pg
 import sys
+import os
 pg.init()
 pg.font.init()
 
 class Box:
-    def __init__(self, screen, row, column, isOpen):
+    def __init__(self, screen, row, column, isOpen, isEnemy):
         self.screen = screen
         self.row = row
         self.column = column
         self.isOpen = isOpen
+        self.isEnemy = isEnemy
         self.rect = pg.Rect(self.column * size, self.row * size, size, size)
     
     def draw(self):
         if self.isOpen: 
             pg.draw.rect(self.screen, (255, 255, 255), self.rect, 1)
+        elif self.isEnemy:
+            pg.draw.rect(self.screen, (255, 255, 0), self.rect)
         else:
             pg.draw.rect(self.screen, (255, 0, 0), self.rect)
 
@@ -23,6 +27,9 @@ class Box:
 
     def checkIfOpen(self):
         return self.isOpen
+    
+    def checkIfEnemy(self):
+        return self.isEnemy
     
     def changeState(self):
         self.isOpen = not self.isOpen
@@ -38,8 +45,9 @@ class Button:
         self.rect = pg.Rect(x, y, width, height)
     
     def draw(self):
-        pg.draw.rect(self.screen, (255, 255, 255), self.rect, 1)
-        text = FONT.render(self.text, False, (255, 255, 255))
+        font = pg.font.SysFont(FONT, self.width // 4 )
+        pg.draw.rect(self.screen, (255, 255, 255), self.rect)
+        text = font.render(self.text, False, (0, 0, 0))
         screen.blit(text, (self.x + (self.width / 4), self.y + (self.height / 4)))
     
     def collide(self, pos):
@@ -49,7 +57,10 @@ def setupGrid():
     for row in range(rows):
         grid_row = []
         for col in range(columns):
-            grid_row.append(Box(screen, row, col, True))
+            if (row == 0 or row == rows - 1 or col == 0 or col == columns - 1):
+                grid_row.append(Box(screen, row, col, False, False))
+            else:
+                grid_row.append(Box(screen, row, col, True, False))
         grid.append(grid_row)
 
 def restartGrid():
@@ -57,7 +68,10 @@ def restartGrid():
     for row in range(rows):
         grid_row = []
         for col in range(columns):
-            grid_row.append(Box(screen, row, col, True))
+            if (row == 0 or row == rows - 1 or col == 0 or col == columns - 1):
+                grid_row.append(Box(screen, row, col, False, False))
+            else:
+                grid_row.append(Box(screen, row, col, True, False))
         grid.append(grid_row)
     return grid
 
@@ -80,17 +94,30 @@ def boxHit():
 
 def createMap():
     if create_map.collide(pg.mouse.get_pos()):
-        file = open(f"Maps/map{random.randint(0, 1000)}.txt", "a")
+        maps = os.listdir("Maps")
+        count = 0
+        if (len(maps) > 0):
+            last_map = maps[len(maps) - 1][-5]
+            count = int(last_map) + 1
+        file = open(f"Maps/map{count}.txt", "a")
         file.write(f"{rows} {columns}\n")
         for row in range(rows):
             line = ""
             for col in range(columns):
                 if grid[row][col].checkIfOpen():
                     line += "."
+                elif grid[row][col].checkIfEnemy():
+                    line += "e"
                 else:
                     line += "x"
             file.write(line + "\n")
         file.close()
+
+def setEnemy():
+    for row in range(rows):
+        for col in range(columns):
+            if grid[row][col].collide(pg.mouse.get_pos()):
+                grid[row][col] = Box(screen, row, col, False, True)
 
 
 
@@ -100,7 +127,7 @@ HEIGHT = 400
 rows = 20
 columns = 40
 size = 20
-FONT = pg.font.SysFont("Sans Serif", 20)
+FONT = "Sans Serif"
 
 screen = pg.display.set_mode([WIDTH, HEIGHT])
 clock = pg.time.Clock()
@@ -123,9 +150,9 @@ while run:
 
     for event in pg.event.get():
         if event.type == pg.QUIT:
-            kjor = False
+            run = False
             sys.exit()
-        if event.type == pg.MOUSEBUTTONDOWN:
+        if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
             boxHit()
             createMap()
             if small_grid.collide(pg.mouse.get_pos()):
@@ -145,6 +172,8 @@ while run:
                 columns = 40
                 size = 20
                 grid = restartGrid()
+        if event.type == pg.MOUSEBUTTONDOWN and event.button == 3:
+            setEnemy()
     
     pg.display.update()
     clock.tick(60)

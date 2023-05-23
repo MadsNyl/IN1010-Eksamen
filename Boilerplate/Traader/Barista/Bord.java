@@ -25,7 +25,7 @@ public class Bord {
     public String hentKaffe() throws InterruptedException {
         laas.lock();
         try {
-            // if (erTomt) return null;
+            if (erTomt) return null;
             while (kaffer.size() < 1) ikkeKaffeKlar.await();
             String kaffe = kaffer.get(0);
             kaffer.remove(0);

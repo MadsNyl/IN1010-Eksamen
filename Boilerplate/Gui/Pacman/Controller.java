@@ -6,4 +6,8 @@ public class Controller {
         view = new View(this);
         model = new Model(view, this);
     }
+
+    public void start() {
+        view.tegnSpillbrett();
+    }
 }

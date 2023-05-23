@@ -40,6 +40,20 @@ public class View extends JFrame{
 
     }
 
+    // Listenere
+    class Start implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            controller.start();
+        }
+    }
+
+    public void tegnSpillbrett() {
+        hovedPanel.removeAll();
+        hovedPanel.repaint();
+        
+    }
+
     private JPanel settHovedPanel() {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setPreferredSize(new Dimension(BRETTBREDDE, BRETTHOYDE));
@@ -131,6 +145,7 @@ public class View extends JFrame{
         panel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JButton start = new JButton("START");
+        start.addActionListener(new Start());
         start.setBackground(Color.WHITE);
 
         panel.add(start);

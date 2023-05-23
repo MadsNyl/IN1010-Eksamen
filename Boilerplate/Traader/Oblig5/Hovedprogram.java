@@ -1,17 +1,41 @@
 import java.util.HashMap;
+import java.util.ArrayList;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 public class Hovedprogram {
+    private static SubsekvensRegister register = new SubsekvensRegister();
+
     public static void main(String[] args) {
-        String filvei1 = "Data/test1.txt";
-        String filvei2 = "Data/test2.txt";
+        String mappe_liten = "Data/TestDataLitenLike/";
+        String mappe = "Data/TestDataLike/";
 
-        HashMap<String, Subsekvens> kart1 = SubsekvensRegister.lesFil(filvei1);
-        HashMap<String, Subsekvens> kart2 = SubsekvensRegister.lesFil(filvei2);
+        lesInn(mappe_liten);
 
-        HashMap<String, Subsekvens> flettet_kart = SubsekvensRegister.flett(kart1, kart2);
+        flettSammen();
+        System.out.println(register.storrelse());
+        register.SkrivUtKart();
+    }
 
-        for (Subsekvens e : flettet_kart.values()) {
-            System.out.println(e);
+    private static void lesInn(String mappe) {
+        try {
+            Scanner sc = new Scanner(new File(mappe + "metadata.csv"));
+            while (sc.hasNextLine()) {
+                String linje = sc.nextLine();
+                HashMap<String, Subsekvens> kart = SubsekvensRegister.lesFil(mappe + linje); 
+                register.leggTil(kart);         
+            }
+        } catch (FileNotFoundException e) { e.printStackTrace(); }
+    }
+
+    private static void flettSammen() {
+        HashMap<String, Subsekvens> nytt_kart; 
+        while (register.storrelse() > 1) {
+            nytt_kart = SubsekvensRegister.flett(register.hentUt(0), register.hentUt(1));
+            register.fjern(0);
+            register.fjern(1);
+            register.leggTil(nytt_kart);
         }
     }
 }

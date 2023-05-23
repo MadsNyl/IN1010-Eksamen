@@ -1,0 +1,114 @@
+import java.util.Iterator;
+
+class Linked<T> implements Lenkeliste<T>, Iterable<T> {
+
+    private Node start = null;
+    private int size = 0;
+
+    class Node {
+
+	T data;
+	Node next;
+
+	public Node (T data){
+	    this.data = data;
+	}
+    }
+
+    public void print(){
+	Node tmp = start;
+	while (tmp != null){
+	    System.out.println(tmp.data);
+	    tmp = tmp.next;
+	}
+    }
+
+    //Legger til sist i listen
+    @Override
+    public void add(T data){
+	Node n = new Node(data);
+
+	if (start == null){
+	    start = n;
+	    return;
+	}
+	Node tmp = start;
+	while (tmp.next != null){
+	    tmp = tmp.next;
+	}
+	tmp.next = n;
+	size++;
+    }
+
+
+
+    public T get(int pos){
+	int counter = 0;
+
+	Node tmp = start;
+	while (tmp != null){
+	    if (counter == pos){
+		return tmp.data;
+	    }
+	    tmp = tmp.next;
+	    counter++;
+	}
+	return null;
+    }
+
+
+    //Legger til fremst i listen
+    public void addFirst(T data){
+	Node n = new Node(data);
+	n.next = start;
+	start = n;
+    }
+
+    @Override
+    public int size(){
+	return size;
+    }
+
+    //Sletter baser på indeks
+    public void delete(int pos){
+	int counter = 0;
+	if (pos == 0){
+	    start = start.next;
+	    return;
+	}
+	Node tmp = start;
+	Node prev = null;
+	while (tmp != null){
+	    if (counter == pos){
+		prev.next = tmp.next;
+		return;
+	    }
+	    counter++;
+	    prev = tmp;
+	    tmp = tmp.next;
+	}
+
+    }
+
+
+    public Iterator<T> iterator(){
+	return new myIterator();
+    }
+
+    private class myIterator implements Iterator<T> {
+	Node denne = start;
+
+	@Override
+	public boolean hasNext(){
+	    return denne != null;
+	}
+
+	@Override
+	public T next(){
+	    Node tmp = denne;
+	    denne = denne.next;
+	    return tmp.data;
+	}
+    }
+
+}

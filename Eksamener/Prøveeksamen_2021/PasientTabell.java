@@ -31,7 +31,7 @@ public class PasientTabell extends PasientAdm {
         Pasient hentet = tabell[i];
 
         for (int i = 0; i < tabell.length; i++) {
-            if (tabell[i].prioritet.equals(hentet.prioritet)) {
+            if (tabell[i].prioritet == hentet.prioritet) {
                 tabell[i].sengNr = -1;
                 hentet = tabell[i];
                 tabell[i] = null;

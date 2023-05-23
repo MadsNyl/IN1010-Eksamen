@@ -13,6 +13,16 @@ public class SubsekvensRegister {
     // legg til hashmap i register
     public void leggTil(HashMap<String, Subsekvens> kart) { register.add(kart); }
 
+    // fjerner hashmap i register
+    public void fjern(int pos) { register.remove(pos); }
+
+    // henter register
+    public void SkrivUtKart() { 
+        for (HashMap<String, Subsekvens> kart : register) {
+            System.out.println(kart);
+        }
+    }
+
     // ta ut hashmap
     public HashMap<String, Subsekvens> hentUt(int pos) { return register.get(pos); }
 

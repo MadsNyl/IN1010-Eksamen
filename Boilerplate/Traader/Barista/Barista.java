@@ -6,13 +6,13 @@ public class Barista implements Runnable {
     private Bord bord;
     private CountDownLatch barriere;
     private int id;
-    private int teller = 1;
+    private static int teller = 1;
 
     public Barista(Bord bord, CountDownLatch barriere) {
         this.bord = bord;
         this.barriere = barriere;
-        this.id = this.teller;
-        this.teller++;
+        id = teller;
+        teller++;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class Barista implements Runnable {
             System.out.println("Barista med id: " + id + ", har laget en " + kaffe + ".");
             bord.serverKaffe(kaffe);
         }
-        // bord.singaliserTomt();
+        bord.singaliserTomt();
         barriere.countDown();
     }
 
